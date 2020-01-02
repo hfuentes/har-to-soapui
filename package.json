@@ -1,0 +1,14 @@
+{
+  "name": "hector-mock",
+  "version": "1.0.0",
+  "description": "Procesador de archivos HAR hacia MOCK SOAPUI",
+  "main": "proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hector.fuentesg@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "xmlbuilder": "^13.0.2"
+  }
+}
