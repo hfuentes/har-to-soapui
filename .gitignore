@@ -1,5 +1,6 @@
 # Ignores ...
 test.xml
+test.har
 
 # Logs
 logs

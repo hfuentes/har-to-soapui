@@ -3,11 +3,12 @@
 const fs = require('fs');
 const builder = require('xmlbuilder');
 const crypto = require('crypto');
+const config = require('./config.js');
 
 //read json data from har file
 console.info('reading har file ...');
 
-let xhrData = JSON.parse(fs.readFileSync('portalcomercial.har', 'utf8')).log.entries.filter((item) => {
+let xhrData = JSON.parse(fs.readFileSync(config.settings.files.defaultHAR, 'utf8')).log.entries.filter((item) => {
 	cleanXHRData(item);
 	return item['_resourceType'] == 'xhr';
 });
@@ -18,8 +19,9 @@ console.log(xhrData.length + ' xhr entries in har file ...');
 console.log('building xml soapui file ...');
 let xmlString = buildXML(xhrData);
 
+//write xml string into xml file
 console.log('writing xml soapui file ...');
-fs.writeFileSync('test.xml', xmlString);
+fs.writeFileSync(config.settings.files.defaultXML, xmlString);
 
 console.log('finished!');
 
@@ -76,7 +78,7 @@ function buildXML(xhrData) {
 	var xml = builder.create('con:soapui-project', {version: '1.0', encoding: 'UTF-8'})
 		.att('id', getHexId())
 		.att('activeEnvironment', 'Default')
-		.att('name', 'MOCK - HAR File')
+		.att('name', config.settings.project.name)
 		.att('resourceRoot', '${projectDir}')
 		.att('soapui-version', '5.5.0')
 		.att('abortOnError', 'false')
@@ -87,10 +89,10 @@ function buildXML(xhrData) {
 
 	let serv = xml.ele('con:restMockService', {
 		'id': getHexId(),
-		'port': '1111',
+		'port': config.settings.service.port,
 		'path': '/',
-		'host': 'localhost',
-		'name': 'HectorMock',
+		'host': config.settings.service.host,
+		'name': config.settings.service.name,
 		'docroot': ''
 	});
 
